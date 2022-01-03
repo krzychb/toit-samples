@@ -1,0 +1,5 @@
+name: "Climate TFT Demo"
+entrypoint: climate-tft.toit
+triggers:
+  on_boot: true
+  on_install: true
