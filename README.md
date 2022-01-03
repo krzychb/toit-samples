@@ -1,2 +1,4 @@
-# toit-samples
-A collection of sample project written in Toit
+# Toit Samples
+
+A collection of sample projects written in Toit
+
