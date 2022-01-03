@@ -1,0 +1,5 @@
+name: "GPIO Pull-up Pull-down Tester"
+entrypoint: gpio-pull-up-down.toit
+triggers:
+  on_boot: true
+  on_install: true
