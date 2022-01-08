@@ -1,0 +1,5 @@
+name: "Load Control Application"
+entrypoint: load-ctrl.toit
+triggers:
+  on_boot: true
+  on_install: true
