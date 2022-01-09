@@ -1,0 +1,13 @@
+dependencies:
+  bme280:
+    url: github.com/toitware/bme280-driver
+    version: ^1.0.0
+  color_tft:
+    url: github.com/toitware/toit-color-tft
+    version: ^1.2.0
+  pictogrammers_icons:
+    url: github.com/toitware/toit-icons-pictogrammers
+    version: ^1.0.0
+  pixel_display:
+    url: github.com/toitware/toit-pixel-display
+    version: ^1.2.0

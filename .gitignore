@@ -1,6 +1,4 @@
 .DS_Store
 
 # Pacakge files
-package.lock
-package.yaml
 .packages
