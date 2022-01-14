@@ -5,6 +5,7 @@ A collection of sample projects written in [Toit](https://toit.io/),
 - Test state of ESP32 pins using internal week pull up and pull down resistors [gpio-pull-up-down](gpio-pull-up-down)
 - Show climate measurements on TFT screen of ESP-WROVER-KIT [climate-tft](climate-tft)
 - Control temperature with PID [load-ctrl](load-ctrl)
+- Drive digitally controlled potentiometer [x9c10n](x9c10n)
 
 ## How to Use
 
