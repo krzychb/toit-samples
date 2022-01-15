@@ -1,5 +1,0 @@
-name: "X9C10n Digitally Controlled Potentiometer Example"
-entrypoint: cwx9c10n.toit
-triggers:
-  on_boot: true
-  on_install: true
