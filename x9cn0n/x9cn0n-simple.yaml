@@ -1,0 +1,5 @@
+name: "X9Cn0n Simple Example"
+entrypoint: cwx9cn0n-simple.toit
+triggers:
+  on_boot: true
+  on_install: true

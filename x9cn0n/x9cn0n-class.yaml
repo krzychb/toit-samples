@@ -1,0 +1,5 @@
+name: "X9Cn0n Class Implementation Example"
+entrypoint: cwx9cn0n-class.toit
+triggers:
+  on_boot: true
+  on_install: true

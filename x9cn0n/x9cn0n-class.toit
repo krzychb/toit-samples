@@ -1,7 +1,10 @@
 /*
- * Example for managing digital potentiometers X9Cn0n (n0n = 102, 103, 104, 503).
- * Inspired by Arduino library DigiPotX9Cxxx.cpp by Timo Fager, Jul 29, 2011.
- **/
+Example with a class for managing digital potentiometers X9Cn0n (n0n = 102, 103, 104, 503).
+Inspired by Arduino library DigiPotX9Cxxx.cpp by Timo Fager, Jul 29, 2011.
+
+Note:
+This example is based on X9C104 digipot but should work for any other above listed digipots
+*/
 
 import gpio
 
