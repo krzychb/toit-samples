@@ -14,8 +14,8 @@ Change MAX_STEPS to 100 if you have an original digipot.
 MAX_STEPS ::= 30
 
 /* Connect X9C104 digipot to ESP32 board as follows:
-- ESP32 GPIO -- X9C104 pin -- Desription
-- ======================================
+- ESP32 GPIO -- X9C104 pin -- Description
+- =======================================
 - GPIO2 -- CS  -- Chip select
 - GPIO0 -- UD  -- Direction of counting: up and down
 - GPIO4 -- INC -- Pulse input to increment the wiper position 
@@ -37,14 +37,14 @@ main:
   If you attach an Ohm meter to VL and VW pins of the digipot
   the Ohm meter should read about 0 Ohm.
   */
-  change 0 MAX_STEPS 
-  sleep --ms=5000  // Some delay to read the Ohm meter
+  // change 0 MAX_STEPS 
+  sleep --ms=100  // Some delay to read the Ohm meter
 
   /* Change the wiper position up to the middle position.
   For X9C104 digipot the Ohm meter should read about 50 kOhm
   */
-  change 1 MAX_STEPS/2
-  sleep --ms=5000
+  change 0 5
+  sleep --ms=100
 
   // Do not exit the application, stay in endless loop.
   while true:
