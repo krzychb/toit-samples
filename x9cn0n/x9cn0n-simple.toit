@@ -37,14 +37,14 @@ main:
   If you attach an Ohm meter to VL and VW pins of the digipot
   the Ohm meter should read about 0 Ohm.
   */
-  // change 0 MAX_STEPS 
-  sleep --ms=100  // Some delay to read the Ohm meter
+  change 0 MAX_STEPS 
+  sleep --ms=5000  // Some delay to read the Ohm meter
 
   /* Change the wiper position up to the middle position.
   For X9C104 digipot the Ohm meter should read about 50 kOhm
   */
-  change 0 5
-  sleep --ms=100
+  change 1 10
+  sleep --ms=5000
 
   // Do not exit the application, stay in endless loop.
   while true:

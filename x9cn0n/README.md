@@ -2,7 +2,7 @@
 
 This folder contains some examples to show how to control X9C104 and similar digipots, and provides the Toit class to control it.
 
-- [x9cn0n-simple](x9cn0n-simple.toit) - A simple example to provide the basis of operating X9Cn0n digipots.
+- [x9cn0n-simple](x9cn0n-simple.toit) - A simple example to provide the basis of operating X9Cn0n digipots.
 - [x9cn0n-class](x9cn0n-class.toit) - The Toit class to operate the digipot.
 
 ## The Story
@@ -25,11 +25,11 @@ Note: I saw these digipots in DIP package. If you get one then no breakboard is 
 
 The example code is configured for the following connections:
 
-| ESP32 GPIO | X9C104 Pin | Description of X9C104 Pin Functionality      |
-|------------|------------|----------------------------------------------|
-| GPIO2      | CS         | Chip select                                  |
-| GPIO0      | UD         | Direction of counting: up and down           |
-| GPIO4      | INC        | Pulse input to increment the wiper position  |
+| ESP32 GPIO  | X9C104 Pin | Description of X9C104 Pin Functionality      |
+|-------------|------------|----------------------------------------------|
+| GPIO2       | CS         | Chip select                                  |
+| GPIO0       | UD         | Direction of counting: up and down           |
+| GPIO4       | INC        | Pulse input to increment the wiper position  |
 
 See the picture below of how the connections look with real hardware.
 
@@ -60,8 +60,9 @@ The specific signal sequence is as follows:
 
 For some reason, my digpot has only 30 wiper tap points while according to the datasheet it should have 100 tap points. I have purchased two digpots and both behave the same. Please see the picture below, maybe you have noticed the same issue and recognize this model. It is also possible that I refer to an incorrect datasheet or miss something in the control procedure.
 
-![alt text](_more/x9c104-digipot-breakout-close-up.png "X9C104S Breakout Close-up")
-![alt text](_more/x9c104-digipot-breakout.png "X9C104S Breakout")
+
+
+<img src="_more/x9c104-digipot-breakout-close-up.png" alt="X9C104S Breakout Close-up" height="260"/> <img src="_more/x9c104-digipot-breakout.png" alt="X9C104S Breakout" height="260"/>
 
 ## How to Use Toit
 
