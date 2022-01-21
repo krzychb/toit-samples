@@ -1,0 +1,5 @@
+name: "MAX6675 Reading Example - Simple"
+entrypoint: max6675-simple.toit
+triggers:
+  on_boot: true
+  on_install: true

@@ -1,0 +1,5 @@
+name: "MAX6675 Reading Example - Class"
+entrypoint: max6675-class.toit
+triggers:
+  on_boot: true
+  on_install: true

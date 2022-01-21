@@ -6,6 +6,7 @@ A collection of sample projects written in [Toit](https://toit.io/),
 - Show climate measurements on TFT screen of ESP-WROVER-KIT [climate-tft](climate-tft)
 - Control temperature with PID [load-ctrl](load-ctrl)
 - Drive digitally controlled potentiometer [x9cn0n](x9cn0n)
+- Read temperature using MAX6675 converter with K-thermocouple [max6675](max6675)
 
 ## How to Use
 
