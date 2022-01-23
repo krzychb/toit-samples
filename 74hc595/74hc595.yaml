@@ -1,0 +1,5 @@
+name: "74HC596 Example"
+entrypoint: 74hc595.toit
+triggers:
+  on_boot: true
+  on_install: true

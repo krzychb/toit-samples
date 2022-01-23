@@ -1,0 +1,5 @@
+name: "MAX6675 Reading Example - Bit-banging"
+entrypoint: max6675-bit-bang.toit
+triggers:
+  on_boot: true
+  on_install: true
