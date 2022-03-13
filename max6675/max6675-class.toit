@@ -35,7 +35,7 @@ main:
 
   while true:
     print "Temperature: $(%0.1f max6675.read.temperature)°C"
-    sleep --ms=1000
+    sleep --ms=500
 
 
 class Measurement:

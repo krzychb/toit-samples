@@ -15,7 +15,7 @@ sck ::= gpio.Pin.out 14  // Serial clock   (SCK)
 main:
   while true:
     print "Temperature: $(%0.1f max6675_read)°C"       
-    sleep --ms=1000
+    sleep --ms=500
 
 /**
 Read temperature from MAX6675 using bit-baging of ESP32 GPIO pins.

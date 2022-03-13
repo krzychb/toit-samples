@@ -51,5 +51,5 @@ main:
       */
       data = data >> 3  // remove not relevant bits
       print "Temperature: $(%0.1f data * 0.25)°C"
-    sleep --ms=1000
+    sleep --ms=500
 
