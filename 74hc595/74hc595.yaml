@@ -1,4 +1,4 @@
-name: "74HC596 Example"
+name: "74HC595 Example"
 entrypoint: 74hc595.toit
 triggers:
   on_boot: true
