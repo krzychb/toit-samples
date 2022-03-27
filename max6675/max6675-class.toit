@@ -66,28 +66,25 @@ class Max6675:
   read -> Measurement:
     sensor_health/bool := ?
 
-    if device_ != null:
-      data := device_.read 2  // MAX6675 provides two bytes to read
-      value := binary.BIG_ENDIAN.int16 data 0  // input bytes are swapped
-      // Bit D2 is normally low and goes high when the thermocouple input is open. 
-      if (value & THERMOCOUPLE_OPEN_BIT) == THERMOCOUPLE_OPEN_BIT:
-        print "Thermocouple open!"
-        sensor_health = false
-      else:
-        sensor_health = true
-      /* 
-      The first bit, D15, is a dummy sign bit and is always zero. 
-      Bits D14–D3 contain the converted temperature in the order of MSB to LSB.
-      */
-      value = value >> 3  // remove not relevant bits
-      temperature := value * 0.25
-      return Measurement temperature sensor_health
+    data := device_.read 2  // MAX6675 provides two bytes to read
+    value := binary.BIG_ENDIAN.int16 data 0  // input bytes are swapped
+    // Bit D2 is normally low and goes high when the thermocouple input is open. 
+    if (value & THERMOCOUPLE_OPEN_BIT) == THERMOCOUPLE_OPEN_BIT:
+      print "Thermocouple open!"
+      sensor_health = false
     else:
-      return Measurement 0.0 false
+      sensor_health = true
+    /* 
+    The first bit, D15, is a dummy sign bit and is always zero. 
+    Bits D14–D3 contain the converted temperature in the order of MSB to LSB.
+    */
+    value = value >> 3  // remove not relevant bits
+    temperature := value * 0.25
+    return Measurement temperature sensor_health
 
 
 /**
-Bit bang SPI servial device to read raw data for the Maxim Integrated MAX6675 
+Bit bang SPI serial device to read raw data for the Maxim Integrated MAX6675 
 Cold-Junction-Compensated K-Thermocouple-to-Digital Converter.
 (0°C to +1024°C)
 https://datasheets.maximintegrated.com/en/ds/MAX6675.pdf
