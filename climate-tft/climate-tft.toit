@@ -1,9 +1,17 @@
 /*
 Sample program to show climate measurements on TFT screen of ESP-WROVER-KIT
+https://github.com/krzychb/toit-samples/tree/main/climate-tft
 SPDX-License-Identifier: CC0-1.0
+
+If this program looks too complicated, check simpler programs
+that demonstrate partial functionality that is used here:
+
+- detect_motion.toit
+- read_bmp.toit
+- update_display.toit
+
 */
 
-import core.time_impl show set_tz_
 import bitmap show *
 import color_tft show *
 import font show *
@@ -21,20 +29,20 @@ import bme280
 Allocation of GPIO Pins used in this project
 */
 
-// Default ESP-WROVER-KIT pins for driving TFT screen 
+// Default ESP-WROVER-KIT pins for driving TFT display 
 MOSI_GPIO       := gpio.Pin 23
 CLOCK_GPIO      := gpio.Pin 19
 CS_GPIO         := gpio.Pin 22
 DC_GPIO         := gpio.Pin 21
 RESET_GPIO      := gpio.Pin 18
-BACLIGHT_GPIO   := gpio.Pin 5
+BACKLIGHT_GPIO  := gpio.Pin 5
+
+// BMP280 I2C bus GPIO pins
+BMP280_SCL_GPIO := gpio.Pin 13
+BMP280_SDA_GPIO := gpio.Pin 14
 
 // GPIO used for read motion detection signal from a PIR sensor
-PIR_GPIO        := gpio.Pin 15  
-
-// BME280 I2C bus GPIO pins
-BME280_SCL_GPIO := gpio.Pin 13
-BME280_SDA_GPIO := gpio.Pin 14
+PIR_GPIO        := gpio.Pin 34 
 
 /*
 For how long keep the display on if motion is detected
@@ -45,55 +53,49 @@ DISPLAY_ON_DELAY ::= 60_000  // ms
 Configuration of driver for TFT screen on board of ESP-WROVER-KIT
 */
 get_display -> TrueColorPixelDisplay:
-  hz            := 26_000_000
-  width         := 320  // pixels
-  height        := 240  // pixels
-  x_offset      := 0    // pixels
-  y_offset      := 0    // pixels
-  mosi          := MOSI_GPIO
-  clock         := CLOCK_GPIO
-  cs            := CS_GPIO
-  dc            := DC_GPIO
-  reset         := RESET_GPIO
-  backlight     := null  // driver is unable to handle inverted backlight signal
-  invert_colors := false
-  flags         := COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY
 
   bus := spi.Bus
-    --mosi=mosi
-    --clock=clock
+    --mosi=MOSI_GPIO
+    --clock=CLOCK_GPIO
 
   device := bus.device
-    --cs=cs
-    --dc=dc
-    --frequency=hz
+    --cs=CS_GPIO
+    --dc=DC_GPIO
+    --frequency=26_000_000  // Hz
 
-  driver := ColorTft device width height
-    --reset=reset
-    --backlight=backlight
-    --x_offset=x_offset
-    --y_offset=y_offset
-    --flags=flags
-    --invert_colors=invert_colors
+  driver := ColorTft device 320 240  // width x height (in pixels)
+    --reset=RESET_GPIO
+    --backlight=null  // backlight will be controlled separately
+    --x_offset=0      // pixels
+    --y_offset=0      // pixels
+    --flags=COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY      
+    --invert_colors=false
 
   tft := TrueColorPixelDisplay driver
 
   return tft
 
 
-main:
-  set_tz_ "CST-8"
-  tft := get_display
+/*
+Configuration of driver for BMP280 sensor
+*/
+get_bmp:
 
-  task:: update_display tft
-  task:: detect_motion
+  bus := i2c.Bus
+    --sda=BMP280_SDA_GPIO
+    --scl=BMP280_SCL_GPIO
+
+  device := bus.device bme280.I2C_ADDRESS
+  bmp := bme280.Driver device
+
+  return bmp
 
 
 /*
 Configure display and keep it updated
-with live parameters read from BME280 sensor
+with live parameters read from BMP280 sensor
 */
-update_display tft:
+update_display tft bmp:
 
   tft.background = BLACK
   sans := Font [
@@ -104,28 +106,19 @@ update_display tft:
   temp_context := tft.text sans_context 230 50 "?.?°C"
   hum_context  := tft.text sans_context 220 100 "?%"
   prs_context  := tft.text sans_context 255 150 "? hPa"
-  time_context := tft.text sans_context 240 220 "?:??:??"
+  name_context  := tft.text sans_context 255 215 "Krzysztof"
 
   context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff) 
   icon_temperature := tft.icon context 50 55 icons.THERMOMETER
   icon_humidity := tft.icon context 50 105 icons.WATER_OUTLINE
   icon_pressure := tft.icon context 50 155 icons.ARROW_COLLAPSE_DOWN
-  icon_clock := tft.icon context 50 225 icons.CLOCK_OUTLINE
+  icon_name := tft.icon context 50 220 icons.FACE
   tft.draw
 
-  bus := i2c.Bus
-    --sda=BME280_SDA_GPIO
-    --scl=BME280_SCL_GPIO
-
-  device := bus.device bme280.I2C_ADDRESS
-  bme280 := bme280.Driver device
-
   while true:
-    temp_context.text = "$(%.1f bme280.read_temperature)°C"
-    hum_context.text = "$(%d bme280.read_humidity)%"
-    prs_context.text = "$(%d bme280.read_pressure/100) hPa"
-    now := (Time.now).local
-    time_context.text = "$now.h:$(%02d now.m):$(%02d now.s)"
+    temp_context.text = "$(%.1f bmp.read_temperature)°C"
+    hum_context.text = "$(%d bmp.read_humidity)%"
+    prs_context.text = "$(%d bmp.read_pressure/100) hPa"
     tft.draw
     sleep --ms=1000
 
@@ -135,7 +128,7 @@ Check for motion and turn the display on if motion is detected
 */
 detect_motion:
 
-  backlight_off := BACLIGHT_GPIO
+  backlight_off := BACKLIGHT_GPIO
   backlight_off.config --output
   pir_state := PIR_GPIO
   pir_state.config --input
@@ -147,3 +140,11 @@ detect_motion:
     else:
       backlight_off.set 1          // turn the backlight off
       sleep --ms=100
+
+
+main:
+  tft := get_display
+  bmp := get_bmp
+
+  task:: update_display tft bmp
+  task:: detect_motion
