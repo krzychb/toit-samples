@@ -169,9 +169,9 @@ Connect PIR sensor to [Main I/O Connector / JP1](https://docs.espressif.com/proj
 
 | ESP32 GPIO  | BMP280 Pin | Description of PIR Pin Functionality  | Wire Color  |
 |-------------|------------|---------------------------------------|--------------
-| 3.3V        | +          | Power Supply                          |  Red        |
-| GND         | -          | Ground                                |  Blue       |
-| GPIO34      | OUT        | Motion Detected                       |  White      |
+| 3.3V        | +          | Power Supply                          | Red         |
+| GND         | -          | Ground                                | Blue        |
+| GPIO34      | OUT        | Motion Detected                       | White       |
 
 Backlight GPIO is already [connected](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#lcd-u5) internally on ESP-WROVER-KIT and you do not need to do anything about it.
 
@@ -240,3 +240,93 @@ If you see any issue check the other terminal window where you run Jaguar monito
 
 ![alt text](_more/monitor-and-watch-terminal.png "Distinguish 'monitor' and 'watch' terminal windows")
 
+### Test BMP280 Sensor
+
+The next device to test is BMP280 barometric pressure sensor. We would like to show readings from the sensor on monitor" terminal window.
+
+Connect BMP280 sensor to [Main I/O Connector / JP1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#main-i-o-connector-jp1) of ESP-WROVER-KIT:
+
+| ESP32 GPIO  | BMP280 Pin | Description of BMP280 Pin Functionality  | Wire Color  |
+|-------------|------------|------------------------------------------|-------------|
+| 3.3V        | VCC        | Power Supply                             | Red         |
+| GND         | GND        | Ground                                   | Blue        |
+| GPIO13      | SCL        | I2C Clock                                | Yellow      |
+| GPIO14      | SDA        | I2C Data                                 | Orange      |
+
+To operate the sensor we need to install BME280 driver library from [Toit package registry](https://libs.toit.io/). Open "watch" terminal window and terminate the `jag watch` session by pressing _Control-C_. Then install the library by execution the following command:
+
+```
+jag pkg install bme280-driver
+```
+
+Log of successful installation of the package looks as follows:
+
+```
+PS C:\Users\krzys\toit\climate-tft> jag pkg install bme280-driver
+Info: Package 'github.com/toitware/bme280-driver@1.0.0' installed with name 'bme280'
+PS C:\Users\krzys\toit\climate-tft>
+```
+Communication with BMP280 sensor will not be possible if the library is not installed.
+
+Having the driver package installed, you can now prepare and run the test application by adding [read_bmp.toit](read_bmp.toit) to the project folder and running it in "watch" terminal window:
+
+```
+jag watch read_bmp.toit --device climate-tft-krzysztof
+```
+
+If the sensor is connected and if the application is compiled and loaded correctly you should be able to see a similar log in the "monitor" terminal window (change to "monitor" from "watch" window used in previous step). A new reading will be printed out every 1 second:
+
+```
+Temperature: 29.0°C
+Relative humidity: 51%
+Barometric pressure: 1003 hPa
+```
+
+The code for reading BMP280 consist of two parts. The fist part is a function `get_bmp` to configure I2C bus, set I2C address and return an instance of the driver.
+
+```python
+get_bmp:
+
+  bus := i2c.Bus
+    --sda=BMP280_SDA_GPIO
+    --scl=BMP280_SCL_GPIO
+
+  device := bus.device bme280.I2C_ADDRESS
+  bmp := bme280.Driver device
+
+  return bmp
+```
+
+The second part is an endless loop to read measurement of the sensor using the driver and printing them on a terminal.
+
+```python
+main:
+
+  bmp := get_bmp
+
+  while true:
+    print "Temperature: $(%.1f bmp.read_temperature)°C"
+    print "Relative humidity: $(%d bmp.read_humidity)%"
+    print "Barometric pressure: $(%d bmp.read_pressure/100) hPa"
+    print // empty new line
+    sleep --ms=1000
+```
+
+If the above code is working for you, congratulations! Proceed to the next step to test operation of the TFT display. 
+
+In case of "monitor" is returning I2C bus reading error (see below), verify the I2C address of the sensor. 
+
+```
+Decoded by `jag monitor` <v2.0.0-alpha.8>
+As check failed: an int (0) is not a ByteArray.
+  0: Bus.read_reg_             <sdk>\i2c.toit:115:5
+  1: Device.read_reg           <sdk>\i2c.toit:240:17
+  2: Device.read_reg           <sdk>\i2c.toit:233:12
+  3: Registers.read_bytes      <sdk>\i2c.toit:289:20
+  4: Registers.read_u8         <sdk>\serial\registers.toit:41:14
+  5: Driver                    <pkg:bme280-driver>\driver.toit:79:17
+  6: get_bmp                   read_bmp.toit:32:16
+  7: main                      read_bmp.toit:42:10
+```
+
+If SDO pin is connected to GND (instead of being left floating/unconnected) the address I2C should be changed to `I2C_ADDRESS_ALT`.
