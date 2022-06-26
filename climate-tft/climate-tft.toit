@@ -64,12 +64,12 @@ get_display -> TrueColorPixelDisplay:
     --frequency=26_000_000  // Hz
 
   driver := ColorTft device 320 240  // width x height (in pixels)
-    --reset=RESET_GPIO
-    --backlight=null  // backlight will be controlled separately
     --x_offset=0      // pixels
     --y_offset=0      // pixels
     --flags=COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY      
     --invert_colors=false
+    --reset=RESET_GPIO
+    --backlight=null  // backlight will be controlled separately
 
   tft := TrueColorPixelDisplay driver
 
@@ -92,7 +92,7 @@ get_bmp:
 
 
 /*
-Configure display and keep it updated
+Configure layout (context) of display and keep it updated
 with live parameters read from BMP280 sensor
 */
 update_display tft bmp:
@@ -102,7 +102,8 @@ update_display tft bmp:
     sans_24.ASCII,  // Regular characters
     sans_24.LATIN_1_SUPPLEMENT,  // Degree symbol
   ]
-  sans_context := tft.context --landscape --color=WHITE --font=sans --alignment=TEXT_TEXTURE_ALIGN_RIGHT
+  sans_context := tft.context --landscape --color=WHITE --font=sans
+   --alignment=TEXT_TEXTURE_ALIGN_RIGHT
   temp_context := tft.text sans_context 230 50 "?.?°C"
   hum_context  := tft.text sans_context 220 100 "?%"
   prs_context  := tft.text sans_context 255 150 "? hPa"

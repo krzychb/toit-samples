@@ -42,12 +42,12 @@ get_display -> TrueColorPixelDisplay:
     --frequency=26_000_000  // Hz
 
   driver := ColorTft device 320 240  // width x height (in pixels)
-    --reset=RESET_GPIO
-    --backlight=null  // backlight will be controlled separately
     --x_offset=0      // pixels
     --y_offset=0      // pixels
     --flags=COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY      
     --invert_colors=false
+    --reset=RESET_GPIO
+    --backlight=null  // backlight will be controlled separately
 
   tft := TrueColorPixelDisplay driver
 
