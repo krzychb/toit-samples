@@ -2,6 +2,8 @@
 
 This repository contains a simple Toit application that shows temperature, relative humidity and barometric pressure on TFT display of ESP-WROVER-KIT.
 
+![alt text](_more/climate-tft-display.jpg "The application 'climate-tft' on the display of ESP-WROVER-KIT")
+
 
 ## Required Hardware
 
@@ -56,6 +58,33 @@ toit pkg update
 ## How to Use Toit
 
 Check the readme file in the [root folder](../README.md) for information on how to configure and use Toit.
+
+## Compatibility
+
+This application has been run using the following software:
+
+### Toit
+
+```
+PS C:\Users\krzys\toit\climate-tft> toit version
++---------+------------+
+| VERSION |    DATE    |
++---------+------------+
+| v1.19.7 | 2022-03-07 |
+```
+
+### Jaguar
+
+```
+PS C:\Users\krzys\toit\climate-tft> jag version
+Version:         v1.3.1
+SDK version:     v2.0.0-alpha.12
+Build date:      2022-07-01T15:49:05Z
+```
+
+### Libraries
+
+See [package.yaml](package.yaml)
 
 
 ## Step by Step Guide
@@ -253,7 +282,7 @@ Connect BMP280 sensor to [Main I/O Connector / JP1](https://docs.espressif.com/p
 | GPIO13      | SCL        | I2C Clock                                | Yellow      |
 | GPIO14      | SDA        | I2C Data                                 | Orange      |
 
-To operate the sensor we need to install BME280 driver library from [Toit package registry](https://libs.toit.io/). Open "watch" terminal window and terminate the `jag watch` session by pressing _Control-C_. Then install the library by execution the following command:
+To operate the sensor we need to install BME280 driver library from [Toit package registry](https://pkg.toit.io/). Open "watch" terminal window and terminate the `jag watch` session by pressing _Control-C_. Then install the library by executing the following command:
 
 ```
 jag pkg install bme280-driver
@@ -330,3 +359,102 @@ As check failed: an int (0) is not a ByteArray.
 ```
 
 If SDO pin is connected to GND (instead of being left floating/unconnected) the address I2C should be changed to `I2C_ADDRESS_ALT`.
+
+
+### Test Display
+
+The last component to test is TFT display of ESP-WROVER-KIT board. This time we do not need to connect anything since the display is an integral part of the board and connected internally.
+
+To drive the display we need to install and configure two libraries:
+
+- [toit-color-tft](https://pkg.toit.io/package/github.com%2Ftoitware%2Ftoit-color-tft)
+- [toit-pixel-display](https://pkg.toit.io/package/github.com%2Ftoitware%2Ftoit-pixel-display)
+
+ The installation process is identical like for BME280 driver library. You can check the command to install the library by opening [Toit package registry](https://pkg.toit.io/), searching for the package name and checking the package description. 
+
+See below installation commands run in the terminal:
+
+```
+PS C:\Users\krzys\toit\climate-tft> toit pkg install github.com/toitware/toit-color-tft
+Info: Package 'github.com/toitware/toit-color-tft@1.2.0' installed with name 'color_tft'
+PS C:\Users\krzys\toit\climate-tft> toit pkg install github.com/toitware/toit-pixel-display
+Info: Package 'github.com/toitware/toit-pixel-display@1.6.0' installed with name 'pixel_display'
+PS C:\Users\krzys\toit\climate-tft> 
+```
+
+If the packages are installed successfully, you can now prepare and run the test application by adding [update_display.toit](update_display.toit) to the project folder and running it in "watch" terminal window:
+
+```
+jag watch update_display.toit --device climate-tft-krzysztof
+```
+
+If there are no issues, the application should show on "Hello World" the display.
+
+![alt text](_more/display-hello-world.jpg "'Hello Word' on the display of ESP-WROVER-KIT")
+
+The major code blocks of the test application are described below.
+
+Before using the display driver library we need to define GPIO pins controlling the display of the board. The pins are documented [ESP-WROVER-KIT User Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#lcd-u5).
+
+```python
+MOSI_GPIO       := gpio.Pin 23
+CLOCK_GPIO      := gpio.Pin 19
+CS_GPIO         := gpio.Pin 22
+DC_GPIO         := gpio.Pin 21
+RESET_GPIO      := gpio.Pin 18
+BACKLIGHT_GPIO  := gpio.Pin 5
+```
+
+The display is driven using SPI bus of ESP32. Respective procedure to configure the bus and the driver is provided by function `get_display`:
+
+```python
+get_display -> TrueColorPixelDisplay:
+
+  bus := spi.Bus
+    --mosi=MOSI_GPIO
+    --clock=CLOCK_GPIO
+
+  device := bus.device
+    --cs=CS_GPIO
+    --dc=DC_GPIO
+    --frequency=26_000_000  // Hz
+
+  driver := ColorTft device 320 240  // width x height (in pixels)
+    --x_offset=0      // pixels
+    --y_offset=0      // pixels
+    --flags=COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY      
+    --invert_colors=false
+    --reset=RESET_GPIO
+    --backlight=null  // backlight will be controlled separately
+
+  tft := TrueColorPixelDisplay driver
+
+  return tft
+```
+
+Note that besides configuring the pins of SPI bus and the display, the SPI bus frequency, we are also configuring the display driver by providing parameters like resolution (320 x 240 pixels) or color mode.
+
+The final code block of the test application is contained in `main` function. The code is using previously configured driver to show the "Hello World" on the screen. The `main` function may be broken down in to the following parts:
+
+Configuration of backlight GPIO and turning the display backlight on:
+
+```python
+  backlight_off := BACKLIGHT_GPIO
+  backlight_off.config --output
+  backlight_off.set 0   // turn the backlight on
+```
+
+Configuration of so called "context" of the information displayed on the screen. The context describes the attributes of text (and graphics), e.g. font type and size, orientation, color, etc.:
+
+```python
+  tft := get_display
+  tft.background = BLACK
+  sans := Font.get "sans10"
+  sans_context := tft.context --landscape --color=WHITE --font=sans
+  hello_context := tft.text sans_context 130 120 "Hello World"
+  tft.draw
+```
+
+Note that the first line of the code is getting an instance of the display driver `tft := get_display`, and the last is drawing previously configured information of the display `tft.draw`.
+
+Go ahead and change the text, the text attributes (e.g. color) and see what will be shown on the screen. 
