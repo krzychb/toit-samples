@@ -7,7 +7,7 @@ If this program looks too complicated, check simpler programs
 that demonstrate partial functionality that is used here:
 
 - detect_motion.toit
-- read_bmp.toit
+- read_bme.toit
 - update_display.toit
 
 */
@@ -37,9 +37,9 @@ DC_GPIO         := gpio.Pin 21
 RESET_GPIO      := gpio.Pin 18
 BACKLIGHT_GPIO  := gpio.Pin 5
 
-// BMP280 I2C bus GPIO pins
-BMP280_SCL_GPIO := gpio.Pin 13
-BMP280_SDA_GPIO := gpio.Pin 14
+// BME280 I2C bus GPIO pins
+BME280_SCL_GPIO := gpio.Pin 13
+BME280_SDA_GPIO := gpio.Pin 14
 
 // GPIO used for read motion detection signal from a PIR sensor
 PIR_GPIO        := gpio.Pin 34 
@@ -77,25 +77,25 @@ get_display -> TrueColorPixelDisplay:
 
 
 /*
-Configuration of driver for BMP280 sensor
+Configuration of driver for BME280 sensor
 */
-get_bmp:
+get_bme:
 
   bus := i2c.Bus
-    --sda=BMP280_SDA_GPIO
-    --scl=BMP280_SCL_GPIO
+    --sda=BME280_SDA_GPIO
+    --scl=BME280_SCL_GPIO
 
   device := bus.device bme280.I2C_ADDRESS
-  bmp := bme280.Driver device
+  bme := bme280.Driver device
 
-  return bmp
+  return bme
 
 
 /*
 Configure layout (context) of display and keep it updated
-with live parameters read from BMP280 sensor
+with live parameters read from BME280 sensor
 */
-update_display tft bmp:
+update_display tft bme:
 
   tft.background = BLACK
   sans := Font [
@@ -109,17 +109,17 @@ update_display tft bmp:
   prs_context  := tft.text sans_context 255 150 "? hPa"
   name_context  := tft.text sans_context 255 215 "Krzysztof"
 
-  context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff) 
-  icon_temperature := tft.icon context 50 55 icons.THERMOMETER
-  icon_humidity := tft.icon context 50 105 icons.WATER_OUTLINE
-  icon_pressure := tft.icon context 50 155 icons.ARROW_COLLAPSE_DOWN
-  icon_name := tft.icon context 50 220 icons.FACE
+  icon_context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff) 
+  icon_temperature := tft.icon icon_context 50 55 icons.THERMOMETER
+  icon_humidity := tft.icon icon_context 50 105 icons.WATER_OUTLINE
+  icon_pressure := tft.icon icon_context 50 155 icons.ARROW_COLLAPSE_DOWN
+  icon_name := tft.icon icon_context 50 220 icons.FACE
   tft.draw
 
   while true:
-    temp_context.text = "$(%.1f bmp.read_temperature)°C"
-    hum_context.text = "$(%d bmp.read_humidity)%"
-    prs_context.text = "$(%d bmp.read_pressure/100) hPa"
+    temp_context.text = "$(%.1f bme.read_temperature)°C"
+    hum_context.text = "$(%d bme.read_humidity)%"
+    prs_context.text = "$(%d bme.read_pressure/100) hPa"
     tft.draw
     sleep --ms=1000
 
@@ -145,7 +145,7 @@ detect_motion:
 
 main:
   tft := get_display
-  bmp := get_bmp
+  bme := get_bme
 
-  task:: update_display tft bmp
+  task:: update_display tft bme
   task:: detect_motion

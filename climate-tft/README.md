@@ -1,8 +1,29 @@
 # Show Climate Measurements with ESP-WROVER-KIT
 
-This repository contains a simple Toit application that shows temperature, relative humidity and barometric pressure on TFT display of ESP-WROVER-KIT.
+This repository contains a simple Toit application that shows temperature, relative humidity and barometric pressure on TFT display of ESP-WROVER-KIT. The following description provides a step by step instruction how to develop the application. We will start from testing hardware and software that provides individual functionality, e.g. reading of barometric pressure sensor or showing some text on the display. Then we will put the individual pieces together to have the complete application.
 
 ![alt text](_more/climate-tft-display.jpg "The application 'climate-tft' on the display of ESP-WROVER-KIT")
+
+
+## Table of Contents
+
+- [Required Hardware](#required-hardware)
+- [Hardware Connections](#hardware-connections)
+  - [BME280 Pressure Sensor](#bme280-pressure-sensor)
+  - [PIR Sensor](#pir-sensor)
+- [Installation of Libraries](#installation-of-libraries)
+- [How to Use Toit](#how-to-use-toit)
+- [Compatibility](#compatibility)
+  - [Toit](#toit)
+  - [Jaguar](#jaguar)
+  - [Libraries](#libraries)
+- [Step by Step Guide](#step-by-step-guide)
+  - [Set up Project](#set-up-project)
+  - [Flash Jaguar](#flash-jaguar)
+  - [Monitor Jaguar](#monitor-jaguar)
+  - [Test PIR Sensor](#test-pir-sensor)
+  - [Test BME280 Sensor](#test-bme280-sensor)
+  - [Test Display](#test-display)
 
 
 ## Required Hardware
@@ -10,19 +31,19 @@ This repository contains a simple Toit application that shows temperature, relat
 To run the application the following hardware is required.
 
 - [ESP-WROVER-KIT](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html)
-- [BMP280 pressure sensor](https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp280/) on a breakboard
+- [BME280 pressure sensor](https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bme280/) on a breakboard
 - PIR motion sensor
 - Some wires to make connections
-- Optionally a protoboard and sockets to provide more permanent connection between ESP-WROVER-KIT as well as BMP280 and PIR.
+- Optionally a protoboard and sockets to provide more permanent connection between ESP-WROVER-KIT as well as BME280 and PIR.
 
 
 ## Hardware Connections
 
 The example code is configured for the connections described below.
 
-### BMP280 Pressure Sensor
+### BME280 Pressure Sensor
 
-| ESP32 GPIO  | BMP280 Pin | Description of BMP280 Pin Functionality  |
+| ESP32 GPIO  | BME280 Pin | Description of BME280 Pin Functionality  |
 |-------------|------------|------------------------------------------|
 | 3.3V        | VCC        | Power Supply                             |
 | GND         | GND        | Ground                                   |
@@ -31,7 +52,7 @@ The example code is configured for the connections described below.
 
 ### PIR Sensor
 
-| ESP32 GPIO  | BMP280 Pin | Description of PIR Pin Functionality  |
+| ESP32 GPIO  | BME280 Pin | Description of PIR Pin Functionality  |
 |-------------|------------|---------------------------------------|
 | 3.3V        | +          | Power Supply                          |
 | GND         | -          | Ground                                |
@@ -196,10 +217,10 @@ In this step we are going to check if PIR sensor is operational. If motion is de
 
 Connect PIR sensor to [Main I/O Connector / JP1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#main-i-o-connector-jp1) of ESP-WROVER-KIT:
 
-| ESP32 GPIO  | BMP280 Pin | Description of PIR Pin Functionality  | Wire Color  |
+| ESP32 GPIO  | BME280 Pin | Description of PIR Pin Functionality  | Wire Color  |
 |-------------|------------|---------------------------------------|--------------
 | 3.3V        | +          | Power Supply                          | Red         |
-| GND         | -          | Ground                                | Blue        |
+| GND         | -          | Ground                                | Black       |
 | GPIO34      | OUT        | Motion Detected                       | White       |
 
 Backlight GPIO is already [connected](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#lcd-u5) internally on ESP-WROVER-KIT and you do not need to do anything about it.
@@ -269,16 +290,16 @@ If you see any issue check the other terminal window where you run Jaguar monito
 
 ![alt text](_more/monitor-and-watch-terminal.png "Distinguish 'monitor' and 'watch' terminal windows")
 
-### Test BMP280 Sensor
+### Test BME280 Sensor
 
-The next device to test is BMP280 barometric pressure sensor. We would like to show readings from the sensor on monitor" terminal window.
+The next device to test is BME280 barometric pressure sensor. We would like to show readings from the sensor on monitor" terminal window.
 
-Connect BMP280 sensor to [Main I/O Connector / JP1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#main-i-o-connector-jp1) of ESP-WROVER-KIT:
+Connect BME280 sensor to [Main I/O Connector / JP1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#main-i-o-connector-jp1) of ESP-WROVER-KIT:
 
-| ESP32 GPIO  | BMP280 Pin | Description of BMP280 Pin Functionality  | Wire Color  |
+| ESP32 GPIO  | BME280 Pin | Description of BME280 Pin Functionality  | Wire Color  |
 |-------------|------------|------------------------------------------|-------------|
 | 3.3V        | VCC        | Power Supply                             | Red         |
-| GND         | GND        | Ground                                   | Blue        |
+| GND         | GND        | Ground                                   | Black       |
 | GPIO13      | SCL        | I2C Clock                                | Yellow      |
 | GPIO14      | SDA        | I2C Data                                 | Orange      |
 
@@ -295,12 +316,12 @@ PS C:\Users\krzys\toit\climate-tft> jag pkg install bme280-driver
 Info: Package 'github.com/toitware/bme280-driver@1.0.0' installed with name 'bme280'
 PS C:\Users\krzys\toit\climate-tft>
 ```
-Communication with BMP280 sensor will not be possible if the library is not installed.
+Communication with BME280 sensor will not be possible if the library is not installed.
 
-Having the driver package installed, you can now prepare and run the test application by adding [read_bmp.toit](read_bmp.toit) to the project folder and running it in "watch" terminal window:
+Having the driver package installed, you can now prepare and run the test application by adding [read_bme.toit](read_bme.toit) to the project folder and running it in "watch" terminal window:
 
 ```
-jag watch read_bmp.toit --device climate-tft-krzysztof
+jag watch read_bme.toit --device climate-tft-krzysztof
 ```
 
 If the sensor is connected and if the application is compiled and loaded correctly you should be able to see a similar log in the "monitor" terminal window (change to "monitor" from "watch" window used in previous step). A new reading will be printed out every 1 second:
@@ -311,19 +332,19 @@ Relative humidity: 51%
 Barometric pressure: 1003 hPa
 ```
 
-The code for reading BMP280 consist of two parts. The fist part is a function `get_bmp` to configure I2C bus, set I2C address and return an instance of the driver.
+The code for reading BME280 consist of two parts. The fist part is a function `get_bme` to configure I2C bus, set I2C address and return an instance of the driver.
 
 ```python
-get_bmp:
+get_bme:
 
   bus := i2c.Bus
-    --sda=BMP280_SDA_GPIO
-    --scl=BMP280_SCL_GPIO
+    --sda=BME280_SDA_GPIO
+    --scl=BME280_SCL_GPIO
 
   device := bus.device bme280.I2C_ADDRESS
-  bmp := bme280.Driver device
+  bme := bme280.Driver device
 
-  return bmp
+  return bme
 ```
 
 The second part is an endless loop to read measurement of the sensor using the driver and printing them on a terminal.
@@ -331,12 +352,12 @@ The second part is an endless loop to read measurement of the sensor using the d
 ```python
 main:
 
-  bmp := get_bmp
+  bme := get_bme
 
   while true:
-    print "Temperature: $(%.1f bmp.read_temperature)°C"
-    print "Relative humidity: $(%d bmp.read_humidity)%"
-    print "Barometric pressure: $(%d bmp.read_pressure/100) hPa"
+    print "Temperature: $(%.1f bme.read_temperature)°C"
+    print "Relative humidity: $(%d bme.read_humidity)%"
+    print "Barometric pressure: $(%d bme.read_pressure/100) hPa"
     print // empty new line
     sleep --ms=1000
 ```
@@ -354,8 +375,8 @@ As check failed: an int (0) is not a ByteArray.
   3: Registers.read_bytes      <sdk>\i2c.toit:289:20
   4: Registers.read_u8         <sdk>\serial\registers.toit:41:14
   5: Driver                    <pkg:bme280-driver>\driver.toit:79:17
-  6: get_bmp                   read_bmp.toit:32:16
-  7: main                      read_bmp.toit:42:10
+  6: get_bme                   read_bme.toit:32:16
+  7: main                      read_bme.toit:42:10
 ```
 
 If SDO pin is connected to GND (instead of being left floating/unconnected) the address I2C should be changed to `I2C_ADDRESS_ALT`.
@@ -458,3 +479,51 @@ Configuration of so called "context" of the information displayed on the screen.
 Note that the first line of the code is getting an instance of the display driver `tft := get_display`, and the last is drawing previously configured information of the display `tft.draw`.
 
 Go ahead and change the text, the text attributes (e.g. color) and see what will be shown on the screen. 
+
+
+### All Pieces Together
+
+Having individual pieces of hardware and software checked, its time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure an TFT display. 
+
+Let's begin with preparation of layout of information shown on the screen. To make the text visible from the distance we are going to use relatively big font and icon sizes:
+
+- Font: SanSerif 24 pixels
+- Icons: 48 pixels
+
+Proposed layout is presented on the picture below. All measurements are shown in pixels in relation to the upper left corner of the screen.
+
+![alt text](_more/climate-tft-display-layout.png "Layout of information displayed on TFT screen of ESP-WROVER-KIT")
+
+Before being able to display information on the screen, we need some initial code to define color of the display's background as well as to import fonts.
+
+```python
+  tft.background = BLACK
+  sans := Font [
+    sans_24.ASCII,  // Regular characters
+    sans_24.LATIN_1_SUPPLEMENT,  // Degree symbol
+  ]
+```
+
+To add the text to the display we first need to define some initial parameters like the text orientation on the display, font color and alignment. This information is assigned to variable `sans_context` in the first line of the code below. Please note the text is aligned right using `--alignment=TEXT_TEXTURE_ALIGN_RIGHT`. Such alignment has been already reflected on the layout where location of the text is measured from the end of the text. Using previously defined context we can then add couple of lines of text formatted for showing measured parameters of temperature, relative humidity and atmospheric pressure. The last line is adding some static text but may used for showing e.g. current time.
+
+```python
+  sans_context := tft.context --landscape --color=WHITE --font=sans
+   --alignment=TEXT_TEXTURE_ALIGN_RIGHT
+  temp_context := tft.text sans_context 230 50 "??.?°C"
+  hum_context  := tft.text sans_context 220 100 "??%"
+  prs_context  := tft.text sans_context 255 150 "???? hPa"
+  name_context  := tft.text sans_context 255 215 "Krzysztof"
+```
+
+Besides the text we will also add a couple of icons to graphically represent displayed information. Again, we start with context definition (for the we provide there a separate variable `icon_context`) to set orientation of the icons as well as color. Within the context we then add the icons. 
+
+```python
+  icon_context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff) 
+  icon_temperature := tft.icon context 50 55 icons.THERMOMETER
+  icon_humidity := tft.icon context 50 105 icons.WATER_OUTLINE
+  icon_pressure := tft.icon context 50 155 icons.ARROW_COLLAPSE_DOWN
+  icon_name := tft.icon context 50 220 icons.FACE
+  tft.draw
+```
+
+The last line of the above code is to draw all previously added information (text and icons) on the screen. 
