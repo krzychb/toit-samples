@@ -24,6 +24,8 @@ This repository contains a simple Toit application that shows temperature, relat
   - [Test PIR Sensor](#test-pir-sensor)
   - [Test BME280 Sensor](#test-bme280-sensor)
   - [Test Display](#test-display)
+  - [All Pieces Together](#all-pieces-together)
+- [Conclusion](#conclusion)
 
 
 ## Required Hardware
@@ -483,7 +485,7 @@ Go ahead and change the text, the text attributes (e.g. color) and see what will
 
 ### All Pieces Together
 
-Having individual pieces of hardware and software checked, its time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure an TFT display. 
+Having individual pieces of hardware and software checked, its time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure on a TFT display. 
 
 Let's begin with preparation of layout of information shown on the screen. To make the text visible from the distance we are going to use relatively big font and icon sizes:
 
@@ -504,7 +506,7 @@ Before being able to display information on the screen, we need some initial cod
   ]
 ```
 
-To add the text to the display we first need to define some initial parameters like the text orientation on the display, font color and alignment. This information is assigned to variable `sans_context` in the first line of the code below. Please note the text is aligned right using `--alignment=TEXT_TEXTURE_ALIGN_RIGHT`. Such alignment has been already reflected on the layout where location of the text is measured from the end of the text. Using previously defined context we can then add couple of lines of text formatted for showing measured parameters of temperature, relative humidity and atmospheric pressure. The last line is adding some static text but may used for showing e.g. current time.
+To add the text to the display we first need to define some initial parameters like the text orientation on the display, font color and font alignment. This information is assigned to variable `sans_context` in the first line of the code below. Please note the text is aligned right using `--alignment=TEXT_TEXTURE_ALIGN_RIGHT`. Such alignment has been already reflected on the layout drawing above where location of the text is measured from the end of the text. Using previously defined context we can then add couple of lines of text formatted for showing measured parameters of temperature, relative humidity and atmospheric pressure. The last line is adding some static text to personalize display.
 
 ```python
   sans_context := tft.context --landscape --color=WHITE --font=sans
@@ -515,7 +517,7 @@ To add the text to the display we first need to define some initial parameters l
   name_context  := tft.text sans_context 255 215 "Krzysztof"
 ```
 
-Besides the text we will also add a couple of icons to graphically represent displayed information. Again, we start with context definition (for the we provide there a separate variable `icon_context`) to set orientation of the icons as well as color. Within the context we then add the icons. 
+Besides the text we will also add a couple of icons to graphically represent displayed information. Again, we start with context definition (for that we provide a separate variable `icon_context`) to set orientation of the icons as well as color. Within the context we then add the icons. 
 
 ```python
   icon_context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff) 
@@ -526,4 +528,30 @@ Besides the text we will also add a couple of icons to graphically represent dis
   tft.draw
 ```
 
-The last line of the above code is to draw all previously added information (text and icons) on the screen. 
+The last line of the above code is to draw all previously added information (text and icons) on the screen.
+
+But we would like to see some live measurements instead of a static text. To do so we only need to take measurements and display the values using context defined previously for each measurement.
+
+```python
+  while true:
+    temp_context.text = "$(%.1f bme.read_temperature)°C"
+    hum_context.text = "$(%d bme.read_humidity)%"
+    prs_context.text = "$(%d bme.read_pressure/100) hPa"
+    tft.draw
+    sleep --ms=1000
+```
+
+The last item to describe in the `main` function. It is used to call individual functions we have discussed one by one above.
+
+```python
+main:
+  tft := get_display
+  bme := get_bme
+
+  task:: update_display tft bme
+  task:: detect_motion
+```
+
+## Conclusion
+
+Writing this simple program we have demonstrated how to use Toit to take measurements and show them on a TFT screen of a commonly available ESP-WROVER-KIT development board from Espressif. We were able to complete the tasks using standard Toit libraries. The code looks quite compact and easy to read thanks to Toit programming language inspired by Python language.
