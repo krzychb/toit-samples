@@ -54,7 +54,7 @@ The example code is configured for the connections described below.
 
 ### PIR Sensor
 
-| ESP32 GPIO  | BME280 Pin | Description of PIR Pin Functionality  |
+| ESP32 GPIO  | PIR Pin    | Description of PIR Pin Functionality  |
 |-------------|------------|---------------------------------------|
 | 3.3V        | +          | Power Supply                          |
 | GND         | -          | Ground                                |
@@ -219,7 +219,7 @@ In this step we are going to check if PIR sensor is operational. If motion is de
 
 Connect PIR sensor to [Main I/O Connector / JP1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#main-i-o-connector-jp1) of ESP-WROVER-KIT:
 
-| ESP32 GPIO  | BME280 Pin | Description of PIR Pin Functionality  | Wire Color  |
+| ESP32 GPIO  | PIR Pin    | Description of PIR Pin Functionality  | Wire Color  |
 |-------------|------------|---------------------------------------|--------------
 | 3.3V        | +          | Power Supply                          | Red         |
 | GND         | -          | Ground                                | Black       |
@@ -259,7 +259,7 @@ main:
   pir_state.config --input
 ```
 
-Then the PIR state is checked in an endless loop. If Motion is detected the backlight is turned on for one second.
+Then the PIR state is checked in an endless loop. If motion is detected the backlight is turned on for one second. 
 
 ``` python
   while true:
@@ -270,6 +270,7 @@ Then the PIR state is checked in an endless loop. If Motion is detected the back
       backlight_off.set 1          // turn the backlight off
       sleep --ms=100
 ```
+Please note that some PIR sensors have off delay and report motion for extra couple of seconds after the movement already stopped. If this is the case then the backlight will be on for at least the the off delay of the PIR.
 
 If the application is working properly, you can experiment by changing the value of `DISPLAY_ON_DELAY` to e.g., `5_000` and checking if TFT screen will turn on for at least five seconds.
 
@@ -413,7 +414,7 @@ jag watch update_display.toit --device climate-tft-krzysztof
 
 If there are no issues, the application should show on "Hello World" the display.
 
-![alt text](_more/display-hello-world.jpg "'Hello Word' on the display of ESP-WROVER-KIT")
+![alt text](_more/display-hello-world.png "'Hello Word' on the display of ESP-WROVER-KIT")
 
 The major code blocks of the test application are described below.
 
@@ -480,12 +481,22 @@ Configuration of so called "context" of the information displayed on the screen.
 
 Note that the first line of the code is getting an instance of the display driver `tft := get_display`, and the last is drawing previously configured information of the display `tft.draw`.
 
+Location of the displayed text is provided in pixels in relation to the upper left corner of the screen.
+
+![alt text](_more/hello-world-display-layout.drawio.png "Layout of 'Hello World!'' text displayed on TFT screen of ESP-WROVER-KIT")
+
 Go ahead and change the text, the text attributes (e.g. color) and see what will be shown on the screen. 
 
 
 ### All Pieces Together
 
 Having individual pieces of hardware and software checked, its time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure on a TFT display. 
+
+If you like to check how the application works before reading the explanation below, connect PIR and BME280 sensors as done before, and load the file [climate-tft.toit](climate-tft.toit) to ESP-WORVER-KIT. Please note that the application is using icons from https://materialdesignicons.com/ that are bundled in a `pictogrammers_icons` package. To install the package run:
+
+```
+toit pkg install github.com/toitware/toit-icons-pictogrammers
+```
 
 Let's begin with preparation of layout of information shown on the screen. To make the text visible from the distance we are going to use relatively big font and icon sizes:
 
