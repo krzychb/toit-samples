@@ -63,7 +63,15 @@ The example code is configured for the connections described below.
 
 ## Installation of Libraries
 
-There are couple of libraries required to compile and run this application. Open terminal, go to the folder where the application is placed and run the following commands:
+There are couple of libraries required to compile and run this application. The libraries are not directly included in this repository. Instead, the name, url, version and hash of each library is saved in [package.yaml](package.yaml) and [package.lock](package.lock) files. If you already have a copy of this repository and would like to install the libraries, then open a terminal, go the `climate-tft` folder and run the following command:
+
+```
+toit pkg update
+```
+
+This command will upload the libraries basing on information contained in `package` files.
+
+If you like to install the libraries in a new project folder that does not contain any `package` information, run the following commands:
 
 ```
 toit pkg install github.com/toitware/bme280-driver
@@ -71,12 +79,6 @@ toit pkg install github.com/toitware/toit-color-tft
 toit pkg install github.com/toitware/toit-pixel-display
 toit pkg install github.com/toitware/toit-icons-pictogrammers
 ```
-
-To update previously installed libraries with a newer version run:
-```
-toit pkg update
-```
-
 
 ## How to Use Toit
 
