@@ -230,6 +230,8 @@ Connect PIR sensor to [Main I/O Connector / JP1](https://docs.espressif.com/proj
 | GND         | -          | Ground                                | Black       |
 | GPIO34      | OUT        | Motion Detected                       | White       |
 
+![alt text](_more/wiring-pir.jpg "Wiring of PIR sensor to ESP-WROVER-KIT")
+
 Backlight GPIO is already [connected](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#lcd-u5) internally on ESP-WROVER-KIT and you do not need to do anything about it.
 
 Before running the test application, you can check this internal connection by shortening GPIO5 to GND. The TFT should turn on if GPIO5 is at low level and turn off if it is a high level or not connected.
@@ -310,6 +312,8 @@ Connect BME280 sensor to [Main I/O Connector / JP1](https://docs.espressif.com/p
 | GND         | GND        | Ground                                   | Black       |
 | GPIO13      | SCL        | I2C Clock                                | Yellow      |
 | GPIO14      | SDA        | I2C Data                                 | Orange      |
+
+![alt text](_more/wiring-bme280.jpg "Wiring of BME280 sensor to ESP-WROVER-KIT")
 
 To operate the sensor we need to install BME280 driver library from [Toit package registry](https://pkg.toit.io/). Open "watch" terminal window and terminate the `jag watch` session by pressing _Control-C_. Then install the library by executing the following command:
 
@@ -496,6 +500,8 @@ Go ahead and change the text, the text attributes (e.g. color) and see what will
 ### All Pieces Together
 
 Having individual pieces of hardware and software checked, its time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure on a TFT display. 
+
+![alt text](_more/wiring-bme280-and-pir.jpg "Wiring of BME280 and PIR sensor to ESP-WROVER-KIT")
 
 If you like to check how the application works before reading the explanation below, connect PIR and BME280 sensors as done before, and load the file [climate-tft.toit](climate-tft.toit) to ESP-WORVER-KIT. Please note that the application is using icons from https://materialdesignicons.com/ that are bundled in a `pictogrammers_icons` package. To install the package run:
 
