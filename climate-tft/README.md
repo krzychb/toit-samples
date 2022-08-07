@@ -25,6 +25,9 @@ This repository contains a simple Toit application that shows temperature, relat
   - [Test BME280 Sensor](#test-bme280-sensor)
   - [Test Display](#test-display)
   - [All Pieces Together](#all-pieces-together)
+- [Next Steps](#next-steps)
+  - [Build a Prototype](#build-a-prototype)
+  - [Show Current Time on the Screen](#show-current-time-on-the-screen)
 - [Conclusion](#conclusion)
 
 
@@ -36,7 +39,7 @@ To run the application the following hardware is required.
 - [BME280 pressure sensor](https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bme280/) on a breakboard
 - PIR motion sensor
 - Some wires to make connections
-- Optionally a protoboard and sockets to provide more permanent connection between ESP-WROVER-KIT as well as BME280 and PIR.
+- Optionally a prototype board and sockets to provide more permanent connection between ESP-WROVER-KIT as well as BME280 and PIR.
 
 
 ## Hardware Connections
@@ -584,9 +587,6 @@ Closeout of both prototypes are shown below. For location and labeling of socket
 | ![alt text](_more/climate-tft-sensor-board-prototypes-front.jpg "Front side of prototypes of sensor boards") | ![alt text](_more/climate-tft-sensor-board-prototypes-back.jpg "Back side of prototypes of sensor boards") |
 | --- | --- |
 | Prototypes of Sensor Board - Front | Prototype of Sensor Board - Back|
-
-
-
 
 
 ### Show Current Time on the Screen
