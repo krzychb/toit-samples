@@ -565,6 +565,35 @@ main:
   task:: detect_motion
 ```
 
+## Next Steps
+
+### Build a Prototype
+
+Consider soldering a prototype board to install the sensor and connect the header of ESP-WROVER-KIT. Below is example of two such boards.
+
+| ![alt text](_more/climate-tft-first-prototype.jpg "First prototype of board with sensors installed above ESP-WROVER-KIT") | ![alt text](_more/climate-tft-second-prototype.jpg "Second prototype of board with sensors installed above ESP-WROVER-KIT") |
+| --- | --- |
+| First Prototype of Sensor Board| Second Prototype of Sensor Board |
+
+The board on the left was the first prototype. It did not work as expected because BME230 sensor was showing temperature higher than expected. The issue was due to the sensor being located above ESP-WROVER-KIT components and warming up the sensor.
+
+To resolve the issue another prototype was build (shown on the right) with BME280 sensor located on the side of ESP-WROVER-KIT.
+
+Closeout of both prototypes are shown below. For location and labeling of sockets please check [layout document](_more/bmp280-and-pir-board-v1.xlsx).
+
+| ![alt text](_more/climate-tft-sensor-board-prototypes-front.jpg "Front side of prototypes of sensor boards") | ![alt text](_more/climate-tft-sensor-board-prototypes-back.jpg "Back side of prototypes of sensor boards") |
+| --- | --- |
+| Prototypes of Sensor Board - Front | Prototype of Sensor Board - Back|
+
+
+
+
+
+### Show Current Time on the Screen
+
+You may want to show current time on the screen. Toit provides [ntp package](https://pkg.toit.io/package/github.com%2Ftoitlang%2Fpkg-ntp) you can use to synchronize clock of ESP to external time server. Check [sync_time.toit](sync_time.toit) for an example how to do it.
+
+
 ## Conclusion
 
 Writing this simple program we have demonstrated how to use Toit to take measurements and show them on a TFT screen of a commonly available ESP-WROVER-KIT development board from Espressif. We were able to complete the tasks using standard Toit libraries. The code looks quite compact and easy to read thanks to Toit programming language inspired by Python language.
