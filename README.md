@@ -8,6 +8,7 @@ A collection of sample projects written in [Toit](https://toit.io/).
 - Drive digitally controlled potentiometer [x9cn0n](x9cn0n)
 - Read temperature using MAX6675 converter with K-thermocouple [max6675](max6675)
 - Drive 74HC595 8-bit shift register [74hc595](74hc595)
+- Show measurements from capacitive moisture sensor on RGB LED strip [capacitive-sensor](capacitive-sensor)
 
 ## How to Use
 
