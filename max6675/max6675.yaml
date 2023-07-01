@@ -1,0 +1,5 @@
+name: "MAX6675 Reading Example (Package, bit banging)"
+entrypoint: max6675.toit
+triggers:
+  on_boot: true
+  on_install: true

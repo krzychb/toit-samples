@@ -1,0 +1,7 @@
+prefixes:
+  max6675: toit-max6675
+packages:
+  toit-max6675:
+    url: github.com/krzychb/toit-max6675
+    version: 0.9.1
+    hash: 10b1a82aea4e19c956d8d58300c0c949d8d1b405

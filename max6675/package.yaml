@@ -1,0 +1,4 @@
+dependencies:
+  max6675:
+    url: github.com/krzychb/toit-max6675
+    version: ^0.9.1

@@ -7,7 +7,7 @@ This folder contains some examples to show how to control X9C104 and similar dig
 
 ## The Story
 
-Digital potentiometers are around for years and there are hundreds of examples of how to control them. I was looking for a way to provide a variable pull down and pull up resistors to test my other [gpio-pull-up-down](../gpio-pull-up-down) example but I could not find any Toit library to control a digipot. I have purchased a pair of quite popular X9C104 digipots that is available from several manufactures and multiple vendors. This model has several libraries available and there are multiple articles that describe how to use it. Out of these resources my attention was attracted by a very nice and simple Arduino library together with a quite comprehensive article [Interfacing X9C104 100K Digital Potentiometer Module with Arduino](https://electropeak.com/learn/interfacing-x9c104-100k-ohm-digital-potentiometer-module-with-arduino/) written by Mehran Maleki. Based on that I decided to write a driver and a control example in Toit. This also turned out to be a very good opportunity to learn the basics of writing classes in Toit.
+Digital potentiometers are around for years and there are hundreds of examples of how to control them. I was looking for a way to provide variable pull down and pull up resistors to test my other [gpio-pull-up-down](../gpio-pull-up-down) example but I could not find any Toit library to control a digipot. I have purchased a pair of quite popular X9C104 digipots that is available from several manufacturers and multiple vendors. This model has several libraries available and multiple articles describe how to use it. Out of these resources, my attention was attracted by a very nice and simple Arduino library together with a quite comprehensive article [Interfacing X9C104 100K Digital Potentiometer Module with Arduino](https://electropeak.com/learn/interfacing-x9c104-100k-ohm-digital-potentiometer-module-with-arduino/) written by Mehran Maleki. Based on that I decided to write a driver and a control example in Toit. This also turned out to be a very good opportunity to learn the basics of writing classes in Toit.
 
 ![alt text](_more/x9c104-digital-potentiometer-testing.jpeg "Driving of Digitally Controlled Potentiometer X9C104")
 
@@ -19,7 +19,7 @@ Digital potentiometers are around for years and there are hundreds of examples o
 - Ohm meter
 - Optionally some LEDs to visualize the status of the digipot's pins
 
-Note: I saw these digipots in DIP package. If you get one then no breakboard is needed.
+Note: I saw these digipots in the DIP package. If you get one then no breakboard is needed.
 
 ## Hardware Connections
 
@@ -37,16 +37,16 @@ See the picture below of how the connections look with real hardware.
 
 ## Example Timing of Signals
 
-Check [X9Cn0n datasheet](_more/REN_x9c102-103-104-503_DST_20050310.pdf) for specific timing requirements of the digipot's control signals. Below is an example of driving the digpot to change the wiper position by five steps down. 
+Check [X9Cn0n datasheet](_more/REN_x9c102-103-104-503_DST_20050310.pdf) for specific timing requirements of the digipot's control signals. Below is an example of driving the digipot to change the wiper position by five steps down.
 
 The specific signal sequence is as follows:
 
 - *UD* signal is asserted low to move the wiper down.
-- *INC* signal is initially asserted high. I have discovered that the digipot will miss one initial step if *INC* is low before the CS change below. The datasheet clearly shows that *INC* should be high before selecting the chip. 
+- *INC* signal is initially asserted high. I have discovered that the digipot will miss one initial step if *INC* is low before the CS change below. The datasheet clearly shows that *INC* should be high before selecting the chip.
 - Chip select *CS* is asserted low to make the chip respond to *UD* and *INC* control signals.
 - Five *INC* pulses are generated. Note that the wiper position is changed on the falling edge of the *INC* signal.
-- Finally the chip select *CS* is asserted high to deselect the chip.
-- At that point, the current wiper position is saved in the non-volatile memory of the chip and the position will be restored on the chip power-up. 
+- Finally, the chip select *CS* is asserted high to deselect the chip.
+- At that point, the current wiper position is saved in the non-volatile memory of the chip and the position will be restored on the chip power-up.
 
 ![alt text](_more/x9c104-digipot-control-example-timing.png "Example of Timing of X9C104 Control Signals")
 
@@ -54,7 +54,7 @@ The specific signal sequence is as follows:
 
 1. The non-volatile memory of the chip has a limited number of write cycles (see parameter *Medium Endurance* that is equal to *100,000 data changes per bit per register* in the attached [X9Cn0n datasheet](_more/REN_x9c102-103-104-503_DST_20050310.pdf)). To avoid saving the current wiper position and wearing out the memory you need to keep the *INC* signal low before deselecting the chip.
 
-2. The duration of signals may be shorter than in the example code. For example the minimum duration of *INC* is 1 µs while in the code it is 1 ms. The reason for making the signals longer is the use of the standard `sleep --ms=1` function that has a minimum resolution of 1 ms. If you like to operate the digipot faster then go ahead and update the code.
+2. The duration of signals may be shorter than in the example code. For example, the minimum duration of *INC* is 1 µs while in the code it is 1 ms. The reason for making the signals longer is the use of the standard `sleep --ms=1` function that has a minimum resolution of 1 ms. If you like to operate the digipot faster then go ahead and update the code.
 
 ## Is my X9C104 not genuine or did I miss something?
 

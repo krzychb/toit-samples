@@ -1,0 +1,5 @@
+name: "MAX6675 Reading Example (Self contained, SPI)"
+entrypoint: max6675-spi.toit
+triggers:
+  on_boot: true
+  on_install: true

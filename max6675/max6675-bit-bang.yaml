@@ -1,4 +1,4 @@
-name: "MAX6675 Reading Example - Bit-banging"
+name: "MAX6675 Reading Example (Self contained, bit banging)"
 entrypoint: max6675-bit-bang.toit
 triggers:
   on_boot: true
