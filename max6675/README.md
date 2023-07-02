@@ -1,11 +1,10 @@
-# Read temperature from MAX6675, a Cold-Junction-Compensated K-Thermocouple-to-Digital Converter
+# Read temperature from MAX6675, a cold junction compensated K-thermocouple to digital converter
 
 This folder contains some examples to show how to read temperature from MAX6675 converter. The examples have been prepared when developing [Toit package with MAX6675 driver](https://github.com/krzychb/toit-max6675).
 
-
-- [max6675--bit-bang.toit](max6675-bit-bang.toit) - An example of reading MAX6675 converter using bit-banging of ESP32 GPIO pins.
+- [max6675-bit-bang.toit](max6675-bit-bang.toit) - An example of reading MAX6675 converter using bit-banging of ESP32 GPIO pins.
 - [max6675-spi.toit](max6675-spi.toit) - An example reading the MAX6675 converter usig the native SPI interface of ESP32.
-- [max667.toit5](max6675.toit) - A simple example to read MAX6675 converter using a driver implemented in a separate package.
+- [max667.toit](max6675.toit) - A simple example to read MAX6675 converter using a driver implemented in a separate package.
 
 
 ## Hardware connections
