@@ -1,0 +1,40 @@
+<!--
+ Inspired by Getting Started with Web Serial Codelab
+ https://codelabs.developers.google.com/codelabs/web-serial/
+
+ Documentation: https://developer.chrome.com/articles/serial/
+
+ To open Chrome console use:
+ - Option + ⌘ + J (on macOS)
+ - Shift + CTRL + J (on Windows/Linux).
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Web Serial Example</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="web-serial.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Web Serial Example</h1>
+    </header>
+    <main class="main">
+      <div id="notSupported" class="hidden">
+        Sorry, <b>Web Serial</b> is not supported on this device, make sure
+        you're running Chrome 78 or later and have enabled the
+        <code>#enable-experimental-web-platform-features</code> flag in
+        <code>chrome://flags</code>
+      </div>
+
+      <button id="buttonConnect" type="button">Connect</button>
+      <button id="buttonSend" type="button">Send</button>
+
+      <pre id="logWindow"></pre>
+    </main>
+  </body>
+</html>

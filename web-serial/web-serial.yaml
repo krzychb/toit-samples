@@ -1,0 +1,5 @@
+name: "Web Serial Example"
+entrypoint: web-serial.toit
+triggers:
+  on_boot: true
+  on_install: true
