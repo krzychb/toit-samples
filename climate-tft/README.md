@@ -1,6 +1,6 @@
 # Show Climate Measurements with ESP-WROVER-KIT
 
-This repository contains a simple Toit application that shows temperature, relative humidity and barometric pressure on TFT display of ESP-WROVER-KIT. The following description provides a step by step instruction how to develop the application. We will start from testing hardware and software that provides individual functionality, e.g. reading of barometric pressure sensor or showing some text on the display. Then we will put the individual pieces together to have the complete application.
+This repository contains a simple Toit application that shows temperature, relative humidity and barometric pressure on TFT display of ESP-WROVER-KIT. The following description provides a step by step instructions on how to develop the application. We will start by testing hardware and software that provides individual functionality, e.g. reading of barometric pressure sensor or showing some text on the display. Then we will put the individual pieces together to have a complete application.
 
 ![alt text](_more/climate-tft-display.jpg "The application 'climate-tft' on the display of ESP-WROVER-KIT")
 
@@ -39,7 +39,7 @@ To run the application the following hardware is required.
 - [BME280 pressure sensor](https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bme280/) on a breakboard
 - PIR motion sensor
 - Some wires to make connections
-- Optionally a prototype board and sockets to provide more permanent connection between ESP-WROVER-KIT as well as BME280 and PIR.
+- Optionally a prototype board and sockets to provide a more permanent connection between ESP-WROVER-KIT as well as BME280 and PIR.
 
 
 ## Hardware Connections
@@ -66,13 +66,13 @@ The example code is configured for the connections described below.
 
 ## Installation of Libraries
 
-There are couple of libraries required to compile and run this application. The libraries are not directly included in this repository. Instead, the name, url, version and hash of each library is saved in [package.yaml](package.yaml) and [package.lock](package.lock) files. If you already have a copy of this repository and would like to install the libraries, then open a terminal, go the `climate-tft` folder and run the following command:
+There are a couple of libraries required to compile and run this application. The libraries are not directly included in this repository. Instead, the name, url, version and hash of each library are saved in [package.yaml](package.yaml) and [package.lock](package.lock) files. If you already have a copy of this repository and would like to install the libraries, then open a terminal, go to the `climate-tft` folder and run the following command:
 
 ```
 toit pkg update
 ```
 
-This command will upload the libraries basing on information contained in `package` files.
+This command will upload the libraries based on information contained in `package` files.
 
 If you like to install the libraries in a new project folder that does not contain any `package` information, run the following commands:
 
@@ -117,20 +117,20 @@ See [package.yaml](package.yaml)
 
 ## Step by Step Guide
 
-The following guide presents the process to test individual components of the application and then running the complete application. 
+The following guide presents the process to test individual components of the application and then running the complete application.
 
 If not done already, please install Toit and check if it works following  [Quick start guide](https://docs.toit.io/getstarted).
 
-Then install Jaguar and check if it works following [instructions](https://github.com/toitlang/jaguar) on GitHub. This guide is using Jaguar for the application development. The reason is that _climate-tft_ application does not need to use cloud infrastructure of Toit and local development directly on your PC is faster.
+Then install Jaguar and check if it works following the [instructions](https://github.com/toitlang/jaguar) on GitHub. This guide is using Jaguar for application development. The reason is that _climate-tft_ application does not need to use the cloud infrastructure of Toit and local development directly on your PC is faster.
 
 
 ### Set up Project
 
-Start of by creating a new empty folder e.g., `climate-tft` and then opening this folder in VS Code. 
+Start by creating a new empty folder e.g., `climate-tft` and then open this folder in VS Code.
 
-In the folder we are going to create some test files and check if they work with the hardware. 
+In the folder, we are going to create some test files and check if they work with the hardware.
 
-You can create a new file by right clicking in VS Code EXPLORER pane on the left, selecting 'New File' from the context menu and entering the file name. Then you can just copy and paste to this file the code taken from https://github.com/krzychb/toit-samples/tree/main/climate-tft.
+You can create a new file by right-clicking in VS Code EXPLORER pane on the left, selecting 'New File' from the context menu and entering the file name. Then you can just copy and paste to this file the code taken from https://github.com/krzychb/toit-samples/tree/main/climate-tft.
 
 
 ### Flash Jaguar
@@ -141,9 +141,9 @@ Before loading any test code you need to flash Jaguar application to your ESP-WR
 jag flash --wifi-ssid [ssid-of-your-wifi] --wifi-password [password-to-your-wifi] --name climate-tft-name
 ```
 
-Replace `[ssid-of-your-wifi]` and `[password-to-your-wifi]` with SSID and password to access point of your wifi. Instead of `climate-tft-name` put a specific name of your choice. You can skip `--name climate-tft-name` if there no other Toit devices running on your network. 
+Replace `[ssid-of-your-wifi]` and `[password-to-your-wifi]` with SSID and password to access the point of your wifi. Instead of `climate-tft-name` put a specific name of your choice. You can skip `--name climate-tft-name` if there no other Toit devices running on your network.
 
-You will be asked to select a port name to your board. ESP-WROVER-KIT will be visible under two ports. Select the port with the higher number. The log of successful flashing will look similar to below:
+You will be asked to select a port name for your board. ESP-WROVER-KIT will be visible under two ports. Select the port with the higher number. The log of successful flashing will look similar to the below:
 
 ```
 PS C:\Users\krzys\toit\climate-tft> jag flash --wifi-ssid my-ssid --wifi-password my-password  --name climate-tft-krzysztof
@@ -186,13 +186,13 @@ You can proceed to the next step only after successfully flashing Jaguar applica
 
 ### Monitor Jaguar
 
-It is a good idea to have an access to log reported by Jaguar. In previously opened terminal window run:
+It is a good idea to have access to the log reported by Jaguar. In the previously opened terminal window run:
 
 ```
 jag monitor --port [port-to-monitor]
 ```
 
-Instead of `[port-to-monitor]` enter the port name used previously to flash Jaguar. Log of successfully executed command will look like follows:
+Instead of `[port-to-monitor]` enter the port name used previously to flash Jaguar. The log of successfully executed commands will look like follows:
 
 ```
 PS C:\Users\krzys\toit\climate-tft> jag monitor --port COM8
@@ -220,7 +220,7 @@ Now you are ready to start testing the application code.
 
 ### Test PIR Sensor
 
-In this step we are going to check if PIR sensor is operational. If motion is detected then backlight of TFT screen of ESP-WROVER-KIT will turn on for one second. If there is no motion the screen will be off.
+In this step, we are going to check if PIR sensor is operational. If the motion is detected then backlight of TFT screen of ESP-WROVER-KIT will turn on for one second. If there is no motion the screen will be off.
 
 Connect PIR sensor to [Main I/O Connector / JP1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#main-i-o-connector-jp1) of ESP-WROVER-KIT:
 
@@ -234,9 +234,9 @@ Connect PIR sensor to [Main I/O Connector / JP1](https://docs.espressif.com/proj
 
 Backlight GPIO is already [connected](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html#lcd-u5) internally on ESP-WROVER-KIT and you do not need to do anything about it.
 
-Before running the test application, you can check this internal connection by shortening GPIO5 to GND. The TFT should turn on if GPIO5 is at low level and turn off if it is a high level or not connected.
+Before running the test application, you can check this internal connection by shortening GPIO5 to GND. The TFT should turn on if GPIO5 is at low level and turn off if it is at a high level or not connected.
 
-After connecting the hardware you are ready to test the software. Create a new file [detect_motion.toit](detect_motion.toit) and load it to ESP-WORVER-KIT. 
+After connecting the hardware you are ready to test the software. Create a new file [detect_motion.toit](detect_motion.toit) and load it to ESP-WORVER-KIT.
 
 To do so open a new terminal window by clicking `Terminal` > `New Terminal` from the VS Code menu. In the terminal enter:
 
@@ -244,10 +244,10 @@ To do so open a new terminal window by clicking `Terminal` > `New Terminal` from
 jag watch detect_motion.toit --device climate-tft-krzysztof
 ```
 
-The part `--device climate-tft-krzysztof` is required to load the application to one specific device if there are more than one on your network. A successful log after executing above command will look similar to below:
+The part `--device climate-tft-krzysztof` is required to load the application to one specific device if there is more than one on your network. A successful log after executing the above command will look similar to the below:
 
 ```
-PS C:\Users\krzys\toit\climate-tft> jag watch detect_motion.toit --device climate-tft-krzysztof       
+PS C:\Users\krzys\toit\climate-tft> jag watch detect_motion.toit --device climate-tft-krzysztof
 Scanning ...
 Running 'detect_motion.toit' on 'climate-tft-krzysztof' ...
 Success: Sent 24KB code to 'climate-tft-krzysztof'
@@ -255,7 +255,7 @@ Success: Sent 24KB code to 'climate-tft-krzysztof'
 
 Now check if the motion sensor is working. If you wave your hand in front to the PIR the TFT screen should turn on. The code to read the sensor and control the TFT is quite simple.
 
-First, backlight GPIO is configured as output and PIR GPIO is configured as input. 
+First, backlight GPIO is configured as output and PIR GPIO is configured as an input.
 
 
 ``` python
@@ -266,7 +266,7 @@ main:
   pir_state.config --input
 ```
 
-Then the PIR state is checked in an endless loop. If motion is detected the backlight is turned on for one second. 
+Then the PIR state is checked in an endless loop. If motion is detected the backlight is turned on for one second.
 
 ``` python
   while true:
@@ -277,7 +277,7 @@ Then the PIR state is checked in an endless loop. If motion is detected the back
       backlight_off.set 1          // turn the backlight off
       sleep --ms=100
 ```
-Please note that some PIR sensors have off delay and report motion for extra couple of seconds after the movement already stopped. If this is the case then the backlight will be on for at least the the off delay of the PIR.
+Please note that some PIR sensors have off delay and report motion for an extra couple of seconds after the movement already stopped. If this is the case then the backlight will be on for at least the the off delay of the PIR.
 
 If the application is working properly, you can experiment by changing the value of `DISPLAY_ON_DELAY` to e.g., `5_000` and checking if TFT screen will turn on for at least five seconds.
 
@@ -336,7 +336,7 @@ Having the driver package installed, you can now prepare and run the test applic
 jag watch read_bme.toit --device climate-tft-krzysztof
 ```
 
-If the sensor is connected and if the application is compiled and loaded correctly you should be able to see a similar log in the "monitor" terminal window (change to "monitor" from "watch" window used in previous step). A new reading will be printed out every 1 second:
+If the sensor is connected and if the application is compiled and loaded correctly you should be able to see a similar log in the "monitor" terminal window (change to "monitor" from "watch" window used in the previous step). A new reading will be printed out every 1 second:
 
 ```
 Temperature: 29.0°C
@@ -344,7 +344,7 @@ Relative humidity: 51%
 Barometric pressure: 1003 hPa
 ```
 
-The code for reading BME280 consist of two parts. The fist part is a function `get_bme` to configure I2C bus, set I2C address and return an instance of the driver.
+The code for reading BME280 consists of two parts. The first part is a function `get_bme` to configure I2C bus, set I2C address and return an instance of the driver.
 
 ```python
 get_bme:
@@ -359,7 +359,7 @@ get_bme:
   return bme
 ```
 
-The second part is an endless loop to read measurement of the sensor using the driver and printing them on a terminal.
+The second part is an endless loop to read measurements of the sensor using the driver and printing them on a terminal.
 
 ```python
 main:
@@ -374,9 +374,9 @@ main:
     sleep --ms=1000
 ```
 
-If the above code is working for you, congratulations! Proceed to the next step to test operation of the TFT display. 
+If the above code is working for you, congratulations! Proceed to the next step to test the operation of the TFT display.
 
-In case of "monitor" is returning I2C bus reading error (see below), verify the I2C address of the sensor. 
+In case of "monitor" is returning I2C bus reading error (see below), verify the I2C address of the sensor.
 
 ```
 Decoded by `jag monitor` <v2.0.0-alpha.8>
@@ -396,23 +396,23 @@ If SDO pin is connected to GND (instead of being left floating/unconnected) the 
 
 ### Test Display
 
-The last component to test is TFT display of ESP-WROVER-KIT board. This time we do not need to connect anything since the display is an integral part of the board and connected internally.
+The last component to test is TFT display of ESP-WROVER-KIT board. This time we do not need to connect anything since the display is an integral part of the board and is connected internally.
 
 To drive the display we need to install and configure two libraries:
 
 - [toit-color-tft](https://pkg.toit.io/package/github.com%2Ftoitware%2Ftoit-color-tft)
 - [toit-pixel-display](https://pkg.toit.io/package/github.com%2Ftoitware%2Ftoit-pixel-display)
 
- The installation process is identical like for BME280 driver library. You can check the command to install the library by opening [Toit package registry](https://pkg.toit.io/), searching for the package name and checking the package description. 
+ The installation process is identical to BME280 driver library. You can check the command to install the library by opening [Toit package registry](https://pkg.toit.io/), searching for the package name and checking the package description.
 
-See below installation commands run in the terminal:
+See below the installation commands run in the terminal:
 
 ```
 PS C:\Users\krzys\toit\climate-tft> toit pkg install github.com/toitware/toit-color-tft
 Info: Package 'github.com/toitware/toit-color-tft@1.2.0' installed with name 'color_tft'
 PS C:\Users\krzys\toit\climate-tft> toit pkg install github.com/toitware/toit-pixel-display
 Info: Package 'github.com/toitware/toit-pixel-display@1.6.0' installed with name 'pixel_display'
-PS C:\Users\krzys\toit\climate-tft> 
+PS C:\Users\krzys\toit\climate-tft>
 ```
 
 If the packages are installed successfully, you can now prepare and run the test application by adding [update_display.toit](update_display.toit) to the project folder and running it in "watch" terminal window:
@@ -438,7 +438,7 @@ RESET_GPIO      := gpio.Pin 18
 BACKLIGHT_GPIO  := gpio.Pin 5
 ```
 
-The display is driven using SPI bus of ESP32. Respective procedure to configure the bus and the driver is provided by function `get_display`:
+The display is driven using SPI bus of ESP32. The respective procedure to configure the bus and the driver is provided by the function `get_display`:
 
 ```python
 get_display -> TrueColorPixelDisplay:
@@ -455,7 +455,7 @@ get_display -> TrueColorPixelDisplay:
   driver := ColorTft device 320 240  // width x height (in pixels)
     --x_offset=0      // pixels
     --y_offset=0      // pixels
-    --flags=COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY      
+    --flags=COLOR_TFT_16_BIT_MODE | COLOR_TFT_FLIP_XY
     --invert_colors=false
     --reset=RESET_GPIO
     --backlight=null  // backlight will be controlled separately
@@ -467,7 +467,7 @@ get_display -> TrueColorPixelDisplay:
 
 Note that besides configuring the pins of SPI bus and the display, the SPI bus frequency, we are also configuring the display driver by providing parameters like resolution (320 x 240 pixels) or color mode.
 
-The final code block of the test application is contained in `main` function. The code is using previously configured driver to show the "Hello World" on the screen. The `main` function may be broken down in to the following parts:
+The final code block of the test application is contained in `main` function. The code is using previously configured driver to show the "Hello World" on the screen. The `main` function may be broken down into the following parts:
 
 Configuration of backlight GPIO and turning the display backlight on:
 
@@ -490,16 +490,16 @@ Configuration of so called "context" of the information displayed on the screen.
 
 Note that the first line of the code is getting an instance of the display driver `tft := get_display`, and the last is drawing previously configured information of the display `tft.draw`.
 
-Location of the displayed text is provided in pixels in relation to the upper left corner of the screen.
+The Location of the displayed text is provided in pixels in relation to the upper left corner of the screen.
 
-![alt text](_more/hello-world-display-layout.drawio.png "Layout of 'Hello World!'' text displayed on TFT screen of ESP-WROVER-KIT")
+![alt text](_more/hello-world-display-layout.drawio.png "The layout of 'Hello World!'' text displayed on TFT screen of ESP-WROVER-KIT")
 
-Go ahead and change the text, the text attributes (e.g. color) and see what will be shown on the screen. 
+Go ahead and change the text, the text attributes (e.g. color) and see what will be shown on the screen.
 
 
 ### All Pieces Together
 
-Having individual pieces of hardware and software checked, its time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure on a TFT display. 
+After having individual pieces of hardware and software checked, it is time to put all of them together into the final application. As stated at the beginning, the application would show temperature, relative humidity and barometric pressure on a TFT display.
 
 ![alt text](_more/wiring-bme280-and-pir.jpg "Wiring of BME280 and PIR sensor to ESP-WROVER-KIT")
 
@@ -509,16 +509,16 @@ If you like to check how the application works before reading the explanation be
 toit pkg install github.com/toitware/toit-icons-pictogrammers
 ```
 
-Let's begin with preparation of layout of information shown on the screen. To make the text visible from the distance we are going to use relatively big font and icon sizes:
+Let's begin with the preparation of the layout of the information shown on the screen. To make the text visible from a distance we are going to use relatively big font and icon sizes:
 
 - Font: SanSerif 24 pixels
 - Icons: 48 pixels
 
-Proposed layout is presented on the picture below. All measurements are shown in pixels in relation to the upper left corner of the screen.
+The proposed layout is presented on the picture below. All measurements are shown in pixels in relation to the upper left corner of the screen.
 
-![alt text](_more/climate-tft-display-layout.png "Layout of information displayed on TFT screen of ESP-WROVER-KIT")
+![alt text](_more/climate-tft-display-layout.png "The layout of information displayed on TFT screen of ESP-WROVER-KIT")
 
-Before being able to display information on the screen, we need some initial code to define color of the display's background as well as to import fonts.
+Before being able to display information on the screen, we need some initial code to define the color of the display's background as well as to import fonts.
 
 ```python
   tft.background = BLACK
@@ -528,7 +528,7 @@ Before being able to display information on the screen, we need some initial cod
   ]
 ```
 
-To add the text to the display we first need to define some initial parameters like the text orientation on the display, font color and font alignment. This information is assigned to variable `sans_context` in the first line of the code below. Please note the text is aligned right using `--alignment=TEXT_TEXTURE_ALIGN_RIGHT`. Such alignment has been already reflected on the layout drawing above where location of the text is measured from the end of the text. Using previously defined context we can then add couple of lines of text formatted for showing measured parameters of temperature, relative humidity and atmospheric pressure. The last line is adding some static text to personalize display.
+To add the text to the display we first need to define some initial parameters like the text orientation on the display, font color and font alignment. This information is assigned to the variable `sans_context` in the first line of the code below. Please note the text is aligned right using `--alignment=TEXT_TEXTURE_ALIGN_RIGHT`. Such alignment has been already reflected in the layout drawing above where the location of the text is measured from the end of the text. Using previously defined context we can then add a couple of lines of text formatted for showing measured parameters of temperature, relative humidity and atmospheric pressure. The last line is adding some static text to personalize the display.
 
 ```python
   sans_context := tft.context --landscape --color=WHITE --font=sans
@@ -539,10 +539,10 @@ To add the text to the display we first need to define some initial parameters l
   name_context  := tft.text sans_context 255 215 "Krzysztof"
 ```
 
-Besides the text we will also add a couple of icons to graphically represent displayed information. Again, we start with context definition (for that we provide a separate variable `icon_context`) to set orientation of the icons as well as color. Within the context we then add the icons. 
+Besides the text, we will also add a couple of icons to graphically represent displayed information. Again, we start with context definition (for that we provide a separate variable `icon_context`) to set the orientation of the icons as well as color. Within the context we then add the icons.
 
 ```python
-  icon_context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff) 
+  icon_context := tft.context --landscape --color=(get_rgb 0xe0 0xe0 0xff)
   icon_temperature := tft.icon context 50 55 icons.THERMOMETER
   icon_humidity := tft.icon context 50 105 icons.WATER_OUTLINE
   icon_pressure := tft.icon context 50 155 icons.ARROW_COLLAPSE_DOWN
@@ -552,7 +552,7 @@ Besides the text we will also add a couple of icons to graphically represent dis
 
 The last line of the above code is to draw all previously added information (text and icons) on the screen.
 
-But we would like to see some live measurements instead of a static text. To do so we only need to take measurements and display the values using context defined previously for each measurement.
+But we would like to see some live measurements instead of static text. To do so we only need to take measurements and display the values using the context defined previously for each measurement.
 
 ```python
   while true:
@@ -563,7 +563,7 @@ But we would like to see some live measurements instead of a static text. To do 
     sleep --ms=1000
 ```
 
-The last item to describe in the `main` function. It is used to call individual functions we have discussed one by one above.
+The last item to describe is the `main` function. It is used to call individual functions we have discussed one by one above.
 
 ```python
 main:
@@ -578,17 +578,17 @@ main:
 
 ### Build a Prototype
 
-Consider soldering a prototype board to install the sensor and connect the header of ESP-WROVER-KIT. Below is example of two such boards.
+Consider soldering a prototype board to install the sensor and connect the header of ESP-WROVER-KIT. Below is an example of two such boards.
 
 | ![alt text](_more/climate-tft-first-prototype.jpg "First prototype of board with sensors installed above ESP-WROVER-KIT") | ![alt text](_more/climate-tft-second-prototype.jpg "Second prototype of board with sensors installed above ESP-WROVER-KIT") |
 | --- | --- |
 | First Prototype of Sensor Board| Second Prototype of Sensor Board |
 
-The board on the left was the first prototype. It did not work as expected because BME230 sensor was showing temperature higher than expected. The issue was due to the sensor being located above ESP-WROVER-KIT components and warming up the sensor.
+The board on the left was the first prototype. It did not work as expected because BME230 sensor was showing a temperature higher than expected. The issue was due to the sensor being located above ESP-WROVER-KIT components and warming up the sensor.
 
-To resolve the issue another prototype was build (shown on the right) with BME280 sensor located on the side of ESP-WROVER-KIT.
+To resolve the issue another prototype was built (shown on the right) with BME280 sensor located on the side of ESP-WROVER-KIT.
 
-Closeout of both prototypes are shown below. For location and labeling of sockets please check [layout document](_more/bmp280-and-pir-board-v1.xlsx).
+A closeout of both prototypes are shown below. For the location and labeling of sockets please check the [layout document](_more/bmp280-and-pir-board-v1.xlsx).
 
 | ![alt text](_more/climate-tft-sensor-board-prototypes-front.jpg "Front side of prototypes of sensor boards") | ![alt text](_more/climate-tft-sensor-board-prototypes-back.jpg "Back side of prototypes of sensor boards") |
 | --- | --- |
@@ -597,7 +597,7 @@ Closeout of both prototypes are shown below. For location and labeling of socket
 
 ### Show Current Time on the Screen
 
-You may want to show current time on the screen. Toit provides [ntp package](https://pkg.toit.io/package/github.com%2Ftoitlang%2Fpkg-ntp) you can use to synchronize clock of ESP to external time server. Check [sync_time.toit](sync_time.toit) for an example how to do it.
+You may want to show the current time on the screen. Toit provides [ntp package](https://pkg.toit.io/package/github.com%2Ftoitlang%2Fpkg-ntp) you can use to synchronize the clock of ESP to an external time server. Check [sync_time.toit](sync_time.toit) for an example on how to do it.
 
 
 ## Conclusion

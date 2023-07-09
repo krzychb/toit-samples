@@ -1,29 +1,12 @@
 prefixes:
-  bme280: bme280-driver
-  color_tft: toit-color-tft
-  pictogrammers_icons: toit-icons-pictogrammers
+  max6675: toit-max6675
   pid: pid
-  pixel_display: toit-pixel-display
 packages:
-  bme280-driver:
-    url: github.com/toitware/bme280-driver
-    version: 1.0.0
-    hash: 65b88ac19a5e2b48627a2dbae6d7757ae45c502c
   pid:
     url: github.com/andersjohnsen/pid
     version: 1.0.1
     hash: ccc542c1d0df544c2e6dfa58efa0bd225698dde4
-  toit-color-tft:
-    url: github.com/toitware/toit-color-tft
-    version: 1.2.0
-    hash: d590954f30b62fa9a28839762dff087a6d19df7c
-    prefixes:
-      pixel_display: toit-pixel-display
-  toit-icons-pictogrammers:
-    url: github.com/toitware/toit-icons-pictogrammers
-    version: 1.0.0
-    hash: 5ac660cc480d5da1fec72e1b24d425ce978419b7
-  toit-pixel-display:
-    url: github.com/toitware/toit-pixel-display
-    version: 1.2.0
-    hash: 417f476dd90e096bde74820203277bfaec88d9ca
+  toit-max6675:
+    url: github.com/krzychb/toit-max6675
+    version: 0.9.1
+    hash: 10b1a82aea4e19c956d8d58300c0c949d8d1b405

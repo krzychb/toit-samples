@@ -1,0 +1,56 @@
+<!--
+Inspired by Getting Started with Web Serial Codelab
+https://codelabs.developers.google.com/codelabs/web-serial/
+
+Documentation: https://developer.chrome.com/articles/serial/
+
+To open Chrome console use:
+- Option + ⌘ + J (on macOS)
+- Shift + CTRL + J (on Windows/Linux).
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Temperature Controller</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="highcharts.js"></script>
+    <script src="accessibility.js"></script>
+    <script src="web-serial.js" defer></script>
+    <script src="web-chart.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Temperature Controller</h1>
+    </header>
+    <main class="main">
+      <div id="notSupported" class="hidden">
+        Sorry, <b>Web Serial</b> is not supported on this device, make sure
+        you're running Chrome 78 or later and have enabled the
+        <code>#enable-experimental-web-platform-features</code> flag in
+        <code>chrome://flags</code>
+      </div>
+
+      <div id="chart-temperature" class="container"></div>
+
+      <table>
+        <tr>
+          <td id="tabButtonConnect"><button id="buttonConnect" type="button">Connect</button></td>
+          <td><input type="text" id="setpointEntry" placeholder="40" size="5"></td>
+          <td id="tabButtonSend"><button id="buttonSend" type="button">Send</button></td>
+          <td>T: </td>
+          <td id="temperature"></td>
+          <td>SP: </td>
+          <td id="setpoint"></td>
+          <td>OUT: </td>
+          <td id="pidOutput"></td>
+        </tr>
+      </table>
+
+      <pre id="logWindow"></pre>
+    </main>
+  </body>
+</html>

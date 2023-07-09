@@ -9,6 +9,7 @@ A collection of sample projects written in [Toit](https://toit.io/).
 - Read temperature using MAX6675 converter with K-thermocouple [max6675](max6675)
 - Drive 74HC595 8-bit shift register [74hc595](74hc595)
 - Show measurements from the capacitive moisture sensor on RGB LED strip [capacitive-sensor](capacitive-sensor)
+- Communicate with a serial device from a web browser [web-serial](web-serial)
 
 ## How to Use
 
