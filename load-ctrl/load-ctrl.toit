@@ -73,8 +73,9 @@ heater_pwm heater_on:
 
   while true:
     heater_on_time := (pid_output * control_loop_time).to_int
-    heater_on.set 1
-    sleep --ms=heater_on_time
+    if heater_on_time > 0:
+      heater_on.set 1
+      sleep --ms=heater_on_time
     heater_on.set 0
     sleep --ms=control_loop_time - heater_on_time
 
